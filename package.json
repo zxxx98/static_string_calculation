@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/zxxx98/static_string_calculation#readme",
   "dependencies": {
-    "ts": "^0.2.2"
+    "ts": "^0.2.2",
+    "typescript": "^4.6.2"
   },
   "devDependencies": {
     "ts-node": "^10.6.0"

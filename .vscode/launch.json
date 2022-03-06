@@ -2,15 +2,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Current TS File",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/node_modules/ts-node/dist/_bin.js",
-            "args": [
-                "${relativeFile}"
+            "name": "Launch Program",
+            "runtimeArgs": [
+                "-r",
+                "ts-node/register"
             ],
-            "cwd": "${workspaceRoot}",
-            "protocol": "inspector"
+            "args": [
+                "${workspaceFolder}/src/Main.ts"
+            ]
         }
     ]
 }
