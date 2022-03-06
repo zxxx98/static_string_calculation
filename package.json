@@ -1,0 +1,25 @@
+{
+  "name": "static_string_calculation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zxxx98/static_string_calculation.git"
+  },
+  "author": "zhouxin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zxxx98/static_string_calculation/issues"
+  },
+  "homepage": "https://github.com/zxxx98/static_string_calculation#readme",
+  "dependencies": {
+    "ts": "^0.2.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.6.0"
+  }
+}
