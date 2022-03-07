@@ -29,6 +29,7 @@ export class Scanner {
         this._charTypeMap.set(CharEnum.Field, this._isField);
         this._charTypeMap.set(CharEnum.Operator, this._isOperator);
         this._charTypeMap.set(CharEnum.Point, this._isPoint);
+        this._charTypeMap.set(CharEnum.Param_split_symbol, this._isSplit);
     }
 
     public setText(text: string) {
@@ -76,6 +77,9 @@ export class Scanner {
                         break;
                     case CharEnum.Operator:
                         kind = KindEnum.OPERATOR;
+                        break;
+                    case CharEnum.Param_split_symbol:
+                        kind = KindEnum.PARAM_SPLIT_SYMBOL;
                         break;
                 }
                 if (kind == null) {
@@ -161,10 +165,10 @@ export class Scanner {
      * @returns isUpdate
      */
     private _checkCharIsUpdate(type: CharEnum) {
-        if (!this._lastTextInfo || this._lastTextInfo.kind === KindEnum.FIELD || this._lastTextInfo.kind === KindEnum.OPERATOR) {
+        if (!this._lastTextInfo || this._lastTextInfo.kind === KindEnum.FIELD || this._lastTextInfo.kind === KindEnum.OPERATOR || this._lastTextInfo.kind === KindEnum.PARAM_SPLIT_SYMBOL) {
             return false;
         }
-        if (type == CharEnum.Operator || type == CharEnum.Field) {
+        if (type == CharEnum.Operator || type == CharEnum.Field || type === CharEnum.Param_split_symbol) {
             return false;
         }
         return true;
@@ -215,6 +219,15 @@ export class Scanner {
         return ascll == 46;
     }
 
+    /**
+     * ,
+     * @param ascll 
+     * @returns 
+     */
+    private _isSplit(ascll: number) {
+        return ascll == 44;
+    }
+
     private _error(pos: number) {
         let err = this._text;
         err = err.slice(0, pos) + `[__${this._text[pos]}__]` + err.slice(pos + 1);
@@ -244,5 +257,6 @@ export enum CharEnum {
     Field,
     Point,
     None,
-    Reverse
+    Reverse,
+    Param_split_symbol
 }

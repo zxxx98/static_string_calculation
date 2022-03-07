@@ -1,6 +1,8 @@
 import { KindEnum } from "./const/KindEnum";
+import { FunctionManager } from "./function/FunctionManager";
 import { CalculationNode } from "./node/CalculationNode";
 import { FieldNode } from "./node/FieldNode";
+import { FunctionNode } from "./node/FunctionNode";
 import { NumberNode } from "./node/NumberNode";
 import { OperatorNode } from "./node/OperatorNode";
 import { VariableNode } from "./node/VariableNode";
@@ -44,7 +46,13 @@ export class Parser {
                     nodes.push(new NumberNode(text));
                     break;
                 case KindEnum.VARIABLE:
-                    nodes.push(new VariableNode(text, this._variables));
+                    if (FunctionManager.checkIsFunc(text)) {
+                        let obj = this._getFieldEndPos(textInfos.slice(curIndex + 2));
+                        nodes.push(this._createFuncNode(obj.arr, text));
+                        curIndex += obj.endPos + 2;
+                    } else {
+                        nodes.push(new VariableNode(text, this._variables));
+                    }
                     break;
                 case KindEnum.OPERATOR:
                     nodes.push(new OperatorNode(text));
@@ -104,5 +112,27 @@ export class Parser {
         root.addChild(this._createTree(nodes.slice(0, rootIndex)));
         root.addChild(this._createTree(nodes.slice(rootIndex + 1)));
         return root;
+    }
+
+    private _createFuncNode(textInfos: TextInfo[], text: string): FunctionNode {
+        let nodess: TextInfo[][] = [];
+        let temps: TextInfo[] = [];
+        for (let temp of textInfos) {
+            if (temp.kind === KindEnum.PARAM_SPLIT_SYMBOL) {
+                nodess.push(temps.slice());
+                temps = [];
+            } else {
+                temps.push(temp);
+            }
+        }
+        if (temps.length > 0) {
+            nodess.push(temps.slice());
+            temps = [];
+        }
+        let funcNode = new FunctionNode(text);
+        for (let nodes of nodess) {
+            funcNode.addChild(this.parser(nodes));
+        }
+        return funcNode;
     }
 }

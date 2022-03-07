@@ -6,8 +6,7 @@
 * @lastEditors 
 * @filePath 
 */
-export enum KindEnum
-{
+export enum KindEnum {
     /**数字 */
     NUMBER,
     /**变量 */
@@ -15,5 +14,9 @@ export enum KindEnum
     /**运算符 */
     OPERATOR,
     /**域 */
-    FIELD
+    FIELD,
+    /**函数 */
+    FUNCTION,
+    /**函数参数分隔符“,” */
+    PARAM_SPLIT_SYMBOL
 }
