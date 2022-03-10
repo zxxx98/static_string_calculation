@@ -58,6 +58,9 @@ export class Parser {
                     nodes.push(new OperatorNode(text));
                     break;
                 case KindEnum.FIELD:
+                    if (this._multiplicativeImplicitCheck(nodes[nodes.length - 1])) {
+                        nodes.push(new OperatorNode("*"));
+                    }
                     let obj = this._getFieldEndPos(textInfos.slice(curIndex + 1));
                     nodes.push(this.parser(obj.arr));
                     curIndex += obj.endPos + 1;
@@ -134,5 +137,16 @@ export class Parser {
             funcNode.addChild(this.parser(nodes));
         }
         return funcNode;
+    }
+
+    /**
+    * 乘法简写检查  如果用了简写就塞一个乘法标记到队列中
+    * @param lastNode 上一个节点
+    */
+    private _multiplicativeImplicitCheck(lastNode: CalculationNode) {
+        if (lastNode instanceof NumberNode || lastNode instanceof VariableNode) {
+            return true;
+        }
+        return false;
     }
 }
